@@ -2,20 +2,21 @@ import { useSelector } from '../../services/store';
 
 import styles from './constructor-page.module.css';
 
-import { BurgerIngredients } from '../../components';
-import { BurgerConstructor } from '../../components';
+import { BurgerIngredients, BurgerConstructor } from '@components';
 import { Preloader } from '../../components/ui';
 import { FC } from 'react';
 
+// Главная страница конструктора бургера
 export const ConstructorPage: FC = () => {
-  /** TODO: взять переменную из стора */
-  const isIngredientsLoading = false;
-
+  const isIngredientsLoading = useSelector(
+    (state) => state.ingredients.isLoading
+  );
   return (
     <>
       {isIngredientsLoading ? (
         <Preloader />
       ) : (
+        // Основной контент страницы: заголовок, список ингредиентов и конструктор
         <main className={styles.containerMain}>
           <h1
             className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}
