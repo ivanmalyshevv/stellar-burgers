@@ -8,6 +8,7 @@ import {
   ProfileIcon
 } from '@zlden/react-developer-burger-ui-components';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
 // UI-компонент шапки
 
@@ -46,7 +47,9 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({
           </div>
         </div>
         <div className={styles.logo}>
-          <Logo className='' />
+          <Link to='/'>
+            <Logo className='' />
+          </Link>
         </div>
         <div className={profileClass} onClick={onProfileClick}>
           <ProfileIcon type={isProfileActive ? 'primary' : 'secondary'} />

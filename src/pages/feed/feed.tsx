@@ -15,10 +15,10 @@ export const Feed: FC = () => {
     (state) => state.ingredients
   );
 
-  // Загружаем ленту заказов при изменении пути
+  // Загружаем ленту заказов только при монтировании
   useEffect(() => {
     dispatch(fetchFeed());
-  }, [dispatch, location.pathname]);
+  }, [dispatch]);
 
   // Загружаем ингредиенты, если их нет
   useEffect(() => {
