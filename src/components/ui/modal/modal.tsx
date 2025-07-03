@@ -10,7 +10,7 @@ import { CloseIcon } from '@zlden/react-developer-burger-ui-components';
 export const ModalUI: FC<TModalUIProps> = memo(
   ({ title, onClose, children }) => (
     <>
-      <div className={styles.modal}>
+      <div className={styles.modal} data-modal>
         <div className={styles.header}>
           <h3
             className={
@@ -21,13 +21,13 @@ export const ModalUI: FC<TModalUIProps> = memo(
           >
             {title}
           </h3>
-          <button className={styles.button} type='button'>
+          <button className={styles.button} type='button' data-close>
             <CloseIcon type='primary' onClick={onClose} />
           </button>
         </div>
         <div className={styles.content}>{children}</div>
       </div>
-      <ModalOverlayUI onClick={onClose} />
+      <ModalOverlayUI onClick={onClose} data-modal-overlay />
     </>
   )
 );

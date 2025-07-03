@@ -1,4 +1,9 @@
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from '../../services/store';
+import { getUserApi } from '@api';
+import { setUser, setAuthChecked } from '../../services/slices/auth/auth';
+import { getCookie } from '../../utils/cookie';
 import {
   ConstructorPage,
   Feed,
@@ -19,8 +24,28 @@ import styles from './app.module.css';
 const App = () => {
   const location = useLocation();
   const background = location.state && location.state.background;
-  // Навигация между страницами
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Инициализация авторизации из токена (cookie или localStorage)
+  useEffect(() => {
+    const token =
+      getCookie('accessToken') || localStorage.getItem('accessToken');
+    if (token) {
+      getUserApi()
+        .then((res) => {
+          if (res && res.user) {
+            dispatch(setUser(res.user));
+          }
+          dispatch(setAuthChecked(true));
+        })
+        .catch(() => {
+          dispatch(setAuthChecked(true));
+        });
+    } else {
+      dispatch(setAuthChecked(true));
+    }
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>

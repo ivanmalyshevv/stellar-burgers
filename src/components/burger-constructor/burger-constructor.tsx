@@ -4,6 +4,10 @@ import { BurgerConstructorUI } from '@ui';
 import { orderBurgerApi } from '@api';
 import { addOrder } from '../../services/slices/feed/feed';
 import { useDispatch, useSelector } from '../../services/store';
+import {
+  selectIsLoggedIn,
+  selectIsAuthChecked
+} from '../../services/selectors/authSelectors';
 import { useNavigate } from 'react-router-dom';
 import {
   clearConstructor,
@@ -25,11 +29,13 @@ export const BurgerConstructor: FC = () => {
   const ingredients = useSelector(selectConstructorIngredients);
   const orderRequest = useSelector(selectOrderRequest);
   const orderModalData = useSelector(selectOrderModalData);
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isAuthChecked = useSelector(selectIsAuthChecked);
 
   // Обработчик оформления заказа
   const onOrderClick = async (): Promise<void> => {
     if (!bun || orderRequest) return;
+    if (!isAuthChecked) return;
     if (!isLoggedIn) {
       navigate('/login');
       return;
@@ -69,7 +75,12 @@ export const BurgerConstructor: FC = () => {
   );
 
   // Флаг блокировки кнопки заказа
-  const isOrderDisabled = !bun || ingredients.length === 0 || orderRequest;
+  const isOrderDisabled =
+    !bun ||
+    ingredients.length === 0 ||
+    orderRequest ||
+    !isAuthChecked ||
+    !isLoggedIn;
 
   return (
     <BurgerConstructorUI
